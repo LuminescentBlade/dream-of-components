@@ -7,6 +7,8 @@ import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
 
+import { DofReactLib } from '@dreams-of-components/react';
+
 export class App extends Component {
   render() {
     return (
@@ -25,6 +27,9 @@ export class App extends Component {
               <Link to="/">Home</Link>
             </li>
             <li>
+              <Link to="/dof-react-lib">DofReactLib</Link>
+            </li>
+            <li>
               <Link to="/page-2">Page 2</Link>
             </li>
           </ul>
@@ -39,6 +44,7 @@ export class App extends Component {
               </div>
             }
           />
+          <Route path="/dof-react-lib" element={<DofReactLib />} />
           <Route
             path="/page-2"
             element={

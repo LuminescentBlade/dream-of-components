@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dreams-of-components/react": ["libs/dof-react-lib/src/index.ts"]
+      "@dream-of-components/react": ["libs/dof-react-lib/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

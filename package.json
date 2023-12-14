@@ -2,7 +2,9 @@
   "name": "@dream-of-components/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "publish-react": "cd dist/libs/dof-react-lib && npm publish --access=public"
+  },
   "private": true,
   "dependencies": {
     "@swc/helpers": "~0.5.2",

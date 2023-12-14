@@ -26,7 +26,8 @@
             "input": ".",
             "output": "."
           }
-        ]
+        ],
+        "extractCss": true
       }
     },
     "test": {

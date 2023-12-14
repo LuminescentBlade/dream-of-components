@@ -1,0 +1,129 @@
+$artist-size: 7px;
+.wrapper {
+  // flex: 0 0 112px;
+  width: 100%;
+  &:nth-child(even) {
+    .name{
+      background-color: #7c53b9;
+    }
+    .name.player {
+      background-color: #2398c9;
+    }
+    .name.enemy {
+      background-color: #9b594f;
+    }
+    .name.npc {
+      background-color: #7ba866;
+    }
+    .name.generic {
+      background-color: #c0bd8d;
+    }
+    .sprite {
+      background-color: #84b583;
+    }
+  }
+}
+
+.name {
+  width: 100%;
+  height: 40px;
+  padding: 6px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--dof-kq-font);
+  font-size: 1.8rem;
+  font-weight: 100;
+  letter-spacing: 0.07em;
+  text-align: right;
+  background-color: #643e9b;
+  &.default {
+    text-transform: capitalize;
+  }
+
+  &.player {
+    background-color: #1e85b0;
+  }
+  &.enemy {
+    background-color: #6e4640;
+  }
+  &.npc {
+    background-color: #5f824f;
+  }
+  &.generic {
+    background-color: #959266;
+  }
+}
+
+.sprite {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background-color: #739e72;
+  button{
+    display: inline-flex;
+  }
+}
+
+.tooltip {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: 0;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .label {
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .data {
+    display: none;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    color: #fff;
+    padding: 12px 16px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    text-align: left;
+    z-index: 2;
+    ul {
+      list-style-type: none;
+    }
+    &:hover {
+      display: block;
+    }
+  }
+  &:hover {
+    .data {
+      display: block;
+    }
+  }
+}
+
+.artist {
+  height: $artist-size;
+  width: $artist-size;
+  flex: 0 0 $artist-size;
+  border: 1px solid #000;
+  border-radius: $artist-size;
+  margin-bottom: 2px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.alts{
+  margin-left: 6px;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  background: 0;
+  cursor: pointer;
+}

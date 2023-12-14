@@ -1,0 +1,41 @@
+{
+  "name": "dof-react-lib",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/dof-react-lib/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/dof-react-lib",
+        "tsConfig": "libs/dof-react-lib/tsconfig.lib.json",
+        "project": "libs/dof-react-lib/package.json",
+        "entryFile": "libs/dof-react-lib/src/index.ts",
+        "external": ["react", "react-dom", "react/jsx-runtime"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/dof-react-lib/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ],
+        "extractCss": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/dof-react-lib/jest.config.ts"
+      }
+    }
+  }
+}

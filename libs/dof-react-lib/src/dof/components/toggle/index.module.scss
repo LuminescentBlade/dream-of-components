@@ -1,0 +1,39 @@
+$active-background: var(--lb-toggle-active-background, var(--dof-color1, rgb(56, 86, 86)));
+$active-knob: var(--lb-toggle-active-knob, var(--dof-color6, #aff));
+$border-color: var(--lb-toggle-border, var(--dof-input-border, #333));
+
+.toggle {
+  --lb-toggle-width: 40px;
+  --lb-toggle-height: calc(var(--lb-toggle-width) / 2);
+  --lb-toggle-button-size: calc(var(--lb-toggle-height) - 2px);
+  display: flex;
+  width: calc(var(--lb-toggle-button-size) * 2);
+  border-radius: var(--lb-toggle-height);
+  height: var(--lb-toggle-height);
+  border: $border-color;
+  background-color: lightgray;
+  transition: background-color .2s;
+  overflow: hidden;
+
+  &:before {
+    content: "";
+    flex: 0 0 var(--lb-toggle-button-size);
+    width: var(--lb-toggle-button-size);
+    height: var(--lb-toggle-button-size);
+    border-radius: var(--lb-toggle-button-size);
+    border: 0;
+    background-color: gray;
+    transition: transform .2s, background-color .2s;
+    box-shadow: 0 0 3px rgba(0,0,0,0.3);
+  }
+}
+
+.toggleActive {
+  background-color: $active-background;
+
+  &:before {
+    transform: translateX(calc(100% - 2px));
+    box-shadow: 0 0 3px rgba(255,255,255,0.3);
+    background-color: $active-knob;
+  }
+}

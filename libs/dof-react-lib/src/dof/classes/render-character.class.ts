@@ -7,7 +7,7 @@ export class RenderCharacter extends RenderUnit {
     constructor(
         private characterInput: IUnit,
         private getPath: (name: string) => string,
-        private renderRules: { bypassSpoiler?: boolean, useEarliest?: boolean } = {},
+        private renderRules: { bypassSpoiler?: boolean, useEarliest?: boolean, renderAll?: boolean } = {},
         private conditionalFields: string[] = []
     ) {
         super(characterInput, getPath);
@@ -15,13 +15,14 @@ export class RenderCharacter extends RenderUnit {
 
     protected renderData?: any;
     protected placements?: { value: string, chapter: number }[];
-    
+
     set currentChapter(data: { chapter: number, route?: string } | undefined) {
-        this.placements = data ? this.getCharacterPlacements(data) : undefined;
-        const placement = this.placements ? this.placements[0]: undefined;
+        const chapterData = this.renderRules?.renderAll ? { chapter: 99 } : data;
+        this.placements = chapterData ? this.getCharacterPlacements(chapterData) : undefined;
+        const placement = this.placements ? this.placements[0] : undefined;
         const parsedCharacter = placement ? this.parseCharacter(placement) : undefined;
-        if (parsedCharacter && data && placement) {
-            this.renderData = this.getRenderItems(parsedCharacter, data, placement)
+        if (parsedCharacter && chapterData && placement) {
+            this.renderData = this.getRenderItems(parsedCharacter, chapterData, placement)
         } else {
             this.renderData = undefined;
         }
@@ -38,6 +39,9 @@ export class RenderCharacter extends RenderUnit {
             return;
         }
         let placement: { value: string, chapter: number }[] | undefined;
+        if (this.renderRules?.renderAll) {
+            return [{ value: 'character', chapter: 99 }];
+        }
         if (!this.character.routeConfig) {
             return;
         }
@@ -103,7 +107,7 @@ export class RenderCharacter extends RenderUnit {
 
     private getAllPlacement(chapter: number, character: IUnit, useEarliest = false, showSecretPlayable = false) {
         // refactor to be more genericized to accept n routes
-        const placements: { value: string, chapter: number }[]  = Object.keys(character.routeConfig!)
+        const placements: { value: string, chapter: number }[] = Object.keys(character.routeConfig!)
             // @ts-ignore
             .reduce((total, route) => total.concat(this.getSinglePlacement(route, chapter, character, useEarliest, showSecretPlayable)), []);
         if (!placements.length) {

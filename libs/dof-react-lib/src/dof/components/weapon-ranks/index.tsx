@@ -25,7 +25,6 @@ export function WeaponRanksDisplay({
         }
     }
 ) {
-    console.log(isMasterSealed);
     const hideUnusable = config?.hideUnusable ?? false;
     const fixedRanks = (!characterDef ? ranks : characterDef.ranks) ?? {};
     let weapons: string[];

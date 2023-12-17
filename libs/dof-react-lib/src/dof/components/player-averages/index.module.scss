@@ -1,0 +1,195 @@
+$stat-table-main-border: var(
+  --lb-averages-main-border,
+  var(--dof-input-border, 1px solid #000)
+);
+$row-label-size: var(--lb-averages-row-label-size, 69px);
+$data-size: var(--lb-averages-data-size, 45px);
+$header-color: var(--lb-averages-header-color, var(--dof-color4, #000));
+$blossom1: var(--lb-averages-blossom-1, var(--dof-color1, #fff));
+$blossom2: var(--lb-averages-blossom-2, var(--dof-color3, #fff));
+$input-border: var(--lb-averages-input-border-color, var(--dof-color1, #333));
+$input-bg: var(--lb-averages-input-bg-color, rgba(0, 0, 0, 0.1));
+$input-text: var(--lb-averages-input-font-color, var(--dof-color-text, #000));
+$input-border-focus: var(
+  --lb-averages-input-border-focus,
+  var(--dof-color2, #3cf)
+);
+$input-bg-focus: var(--lb-averages-input-bg-focus, rgba(0, 0, 0, 0.15));
+$capped-bg: var(--lb-averages-capped-bg, var(--dof-color1, #8ac));
+$caps-bg: var(--lb-averages-caps-bg, var(--dof-color2, gray));
+$caps-font-color: var(--lb-averages-caps-font-color,var(--dof-color3, #000) );
+$avgs-bg: var(--lb-averages-avgs-bg, var(--dof-avgs-bg, #fff));
+$avgs-font-color: var(--lb-averages-avgs-font-color, var(--dof-color2, #333));
+$blossom-plus-button: var(--lb-averages-blossom-plus-button, var(--dof-bg-color, #fff));
+$blossom-bg: var(--lb-averages-blossom-bg, var(--dof-color1, gray));
+$blossom-bg-rm: var(--lb-averages-blossom-bg-rm, var(--dof-bg-color, #fff));
+.tableWrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+}
+.statTable {
+  max-width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  border: $stat-table-main-border;
+  table-layout: fixed;
+  margin: 0 auto 8px;
+  thead {
+    font-weight: 700;
+  }
+  th,
+  td {
+    padding: 4px;
+    border: $stat-table-main-border;
+  }
+  th,
+  .rowHeader {
+    width: $row-label-size;
+    max-width: $row-label-size;
+    min-width: $row-label-size;
+  }
+
+  td,
+  .colHeader {
+    width: $data-size;
+    max-width: $data-size;
+    min-width: $data-size;
+  }
+
+  thead {
+    color: $header-color;
+    border-bottom: $stat-table-main-border;
+    border-bottom-width: 2px;
+  }
+}
+
+.growthsHeader1 {
+  text-shadow: 0 0 5px $blossom1;
+}
+.growthsHeader2 {
+  text-shadow: 0 0 5px $blossom2;
+}
+
+.levelInputs {
+  display: flex;
+  margin-bottom: 12px;
+  gap: 6px;
+}
+
+.levelInputGroup {
+  width: 64px;
+  label {
+    display: block;
+    font-size: 0.8em;
+  }
+
+  input {
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    background-color: $input-bg;
+    border-bottom: 2px solid $input-border;
+    height: 30px;
+    color: $input-text;
+    &:focus {
+      background-color: $input-bg-focus;
+      outline: none;
+      border-bottom: 2px solid $input-border-focus;
+    }
+  }
+}
+.levelControls {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.blossomWidget {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.blossomButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  order: 2;
+}
+.blossomItem {
+  height: 32px;
+  display: inline-flex;
+  background-color: $blossom-bg;
+  padding: 3px 6px;
+  border-radius: 3px;
+  align-items: center;
+  gap: 3px;
+  order: 1;
+  input {
+    height: 100%;
+    width: 30px;
+    border: 0;
+    background: 0;
+    padding: 2px 0 0;
+  }
+}
+button.removeBlossom {
+  position: relative;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  svg {
+    position: relative;
+    z-index: 2;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $blossom-bg-rm;
+    opacity: 0.75;
+    border-radius: 50%;
+  }
+}
+
+.avgs {
+  background-color: $avgs-bg;
+  color: $avgs-font-color;
+}
+
+.caps {
+  background-color: $caps-bg;
+  color: $caps-font-color;
+}
+
+.capped {
+  font-weight: 700;
+  background-color: $capped-bg;
+}
+
+@media screen and (max-width: 600px) {
+  .levelControls {
+    margin-bottom: 12px;
+  }
+  .statTable {
+    font-size: 0.8em;
+  }
+}
+
+@media screen and (max-width: 361px) {
+  // change this when we have 2+ blossom again
+  .levelControls {
+    flex-direction: column;
+    align-items: center;
+  }
+  .blossomWidget {
+    // flex-direction: column;
+    * {
+      order: unset;
+    }
+  }
+}

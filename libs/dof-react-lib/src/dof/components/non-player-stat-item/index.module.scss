@@ -1,0 +1,102 @@
+$border-color: var(--lb-npc-stat-border-color, var(--dof-color1, #000));
+$header-border-color: var(
+  --lb-npc-stat-header-border-color,
+  var(--dof-color3, #000)
+);
+$class-color: var(--lb-npc-stat-class-color, var(--dof-color1, #000));
+$talk-color: var(--lb-npc-stat-talk-color, var(--dof-color3, #000));
+$optional-color: var(--lb-npc-stat-optional-color, var(--dof-color4, #555));
+$gameover-color: var(--lb-npc-stat-gameover-color, var(--dof-red, #f00));
+$stat-label-color: var(--lb-npc-stat-stat-label-color, var(--dof-color4, #000));
+$weapon-border-color: var(
+  --lb-npc-stat-weapon-border-color,
+  var(--dof-color3, #000)
+);
+
+.bossBox {
+  border: 1px solid $border-color;
+  padding: 6px;
+}
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid $header-border-color;
+  h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 1.6rem;
+  }
+}
+.class {
+  display: inline-block;
+  text-transform: capitalize;
+  color: $class-color;
+}
+.subTitle {
+  font-size: 1.3rem;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.route {
+  font-weight: bold;
+}
+
+.tag {
+  display: inline-block;
+  text-transform: capitalize;
+  padding: 2px;
+  font-size: 0.8em;
+}
+
+.talk {
+  border: 1px solid $talk-color;
+  color: $talk-color;
+}
+
+.optional {
+  border: 1px solid $optional-color;
+  color: $optional-color;
+}
+
+.gameOver {
+  border: 1px solid $gameover-color;
+  color: $gameover-color;
+}
+
+.stats {
+  width: 100%;
+  text-align: center;
+  text-transform: capitalize;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  margin-bottom: 3px;
+  li {
+    flex: 1;
+  }
+  .statLabel {
+    font-weight: bold;
+    color: $stat-label-color;
+  }
+}
+
+.weapons {
+  border-top: 1px solid $weapon-border-color;
+  padding-top: 3px;
+  display: flex;
+  list-style: none;
+  gap: 12px;
+  font-size: 0.9em;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 400px) {
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

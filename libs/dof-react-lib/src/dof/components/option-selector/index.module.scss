@@ -1,0 +1,39 @@
+$default-color: var(--lb-option-selector-bg-color, #11a5ca);
+$default-font-color: var(--lb-option-selector-font-color, #0d3754);
+$selected-color: var(--lb-option-select-bg-color-s, #0d3754);
+$selected-font-color: var(--lb-option-selector-font-color-s, #ffbd77);
+$button-separator-color: var(--lb-option-selector-separator, #004f56);
+$text-transform: var(--lb-option-select-text-transform, capitalize);
+$component-height: var(--lb-option-select-height, 40px);
+$component-width: var(--lb-option-select-width, 200px);
+$component-border: var(--lb-option-select-border, 1px solid #0d3754);
+$component-border-radius: var(--lb-option-select-border-radius, 5px);
+
+    
+.base{
+    display: inline-flex;
+    height: $component-height;
+    width: $component-width;
+    border: $component-border;
+    border-radius: $component-border-radius;
+    overflow: hidden;
+}
+
+.option{
+    flex: 1;
+    border: 0;
+    text-transform: $text-transform;
+    background-color: $default-color;
+    color: $default-font-color;
+    border-left: 1px solid $button-separator-color;
+    &:first-child{
+        border: 0;
+    }
+    &:hover{
+        cursor: pointer;
+    }
+    &.selected{
+        background-color: $selected-color;
+        color: $selected-font-color;
+    }
+}

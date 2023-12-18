@@ -177,7 +177,7 @@ export function PlayerAverages({
     function getBlossomWidget() {
         return <div className={styles.blossomWidget}>
             {
-                <button className={`${styles.blossomButton} icon-button button-wrapper`} onClick={addBlossom} disabled={widgetState.blossom.length >= BLOSSOM_LIMIT}>
+                <button className={`${styles.blossomButton} ${styles.iconButton} ${styles.buttonWrapper}`} onClick={addBlossom} disabled={widgetState.blossom.length >= BLOSSOM_LIMIT}>
                     {config?.uiIcons?.addBlossom ? config.uiIcons.addBlossom(widgetState.blossom.length < BLOSSOM_LIMIT) : (widgetState.blossom.length < BLOSSOM_LIMIT) ? '+ Metis Tome' : ''}
                 </button>
             }
@@ -188,13 +188,13 @@ export function PlayerAverages({
                         {
                             !item.isCharacterPromoted ? <button
                                 className={
-                                    `icon-button ${!item.isCharacterPromoted ? `icon-button--${item.isLevelPromoted ? 'actived' : 'inactive'} ` : ''} icon-master-seal`
+                                    `${styles.iconButton} ${!item.isCharacterPromoted ? styles[`iconButton--${item.isLevelPromoted ? 'actived' : 'inactive'} `] : ''} icon-master-seal`
                                 }
                                 onClick={() => toggleBlossomPromotion(index)}
                             >
                             </button> : ''
                         }
-                        <button className={`${styles.removeBlossom} button-wrapper`} onClick={() => removeBlossom(index)}>
+                        <button className={`${styles.removeBlossom} ${styles.buttonWrapper}`} onClick={() => removeBlossom(index)}>
                             {config?.uiIcons?.addBlossom ? config.uiIcons.removeBlossom() : '-'}
                         </button>
                     </div>

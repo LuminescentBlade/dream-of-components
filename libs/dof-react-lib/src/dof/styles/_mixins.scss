@@ -1,0 +1,53 @@
+@mixin flex-line-container {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+@mixin icon-button {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  border: 0;
+  &--inactive {
+    opacity: 0.5;
+  }
+
+  &--active {
+    opacity: 1;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 2px;
+      box-shadow: 0 0 5px 7px rgba(255, 255, 229, 0.5);
+      transform: translate(-50%);
+      z-index: -1;
+    }
+  }
+
+  &:disabled {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    cursor: default;
+  }
+}
+
+@mixin button-wrapper {
+  padding: 0;
+  margin: 0;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+  background: 0;
+  border: 0;
+  path {
+    fill: var(--lb-button-icon-color);
+  }
+  &:hover {
+    fill: var(--lb-button-icon-hover);
+  }
+}

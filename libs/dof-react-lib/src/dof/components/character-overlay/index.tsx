@@ -91,11 +91,11 @@ export function CharacterOverlay(
         {widgetState.enableCompareMode ? '' : <Overlay onClick={clearItem} />}
         <div className={styles.characterOverlay} style={widgetState.dragStateStyle}>
             <div className={styles.controls}>
-                {widgetState.enableCompareMode ? <button className={`${styles.controlButton} button-wrapper`} onMouseDown={mouseDown}>
+                {widgetState.enableCompareMode ? <button className={`${styles.controlButton}`} onMouseDown={mouseDown}>
                     {uiIcons?.dragDrop ? uiIcons.dragDrop() : 'Drag'}
                 </button> : ''}
 
-                <button className={`${styles.controlButton} button-wrapper`} onClick={clearItem}>
+                <button className={`${styles.controlButton}`} onClick={clearItem}>
                     {uiIcons?.exit ? uiIcons.exit() : 'X'}
                 </button>
             </div>
@@ -112,7 +112,7 @@ export function CharacterOverlay(
             </div>
             {allowCompare ? <div className={styles.footer}>
                 {
-                    <div className={'flex-line-container'}>
+                    <div className={styles.footerItem}>
                         <label>Toggle Comparison Mode</label><Toggle active={widgetState.enableCompareMode} onStateChange={setComparisonMode} />
                     </div>
                 }

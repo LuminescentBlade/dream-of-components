@@ -41,7 +41,7 @@ export function UnitSheetSprite({ type, characterDef, expanded, artistConfig, on
                     
 
                 if (onCharacterClick) {
-                    return <button className={'button-wrapper'} onClick={onCharacterClick}>{sprite}</button>
+                    return <button className={styles.characterButton} onClick={onCharacterClick}>{sprite}</button>
                 } else {
                     return sprite;
                 }

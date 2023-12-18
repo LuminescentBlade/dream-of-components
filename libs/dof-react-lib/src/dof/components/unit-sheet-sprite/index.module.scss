@@ -1,3 +1,5 @@
+@import './../../styles/mixins';
+
 $name-font: var(
   --lb-unit-sheet-sprite-name-font,
   var(--dof-kq-font, sans-serif)
@@ -142,4 +144,8 @@ $artist-size: 7px;
   color: #fff;
   background: 0;
   cursor: pointer;
+}
+
+.characterButton{
+  @include button-wrapper;
 }

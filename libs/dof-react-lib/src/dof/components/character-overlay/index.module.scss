@@ -1,15 +1,17 @@
+@import './../../styles/mixins';
+
 $bg-color: var(--lb-char-overlay-bg-color, var(--dof-bg-color, #fff));
 $icon-button-color: var(
   --lb-char-overlay-icon-button-color,
-  var(--dof-button-icon-color, #000)
+  var(--lb-button-icon-color, #000)
 );
 $button-hover-color: var(
   --lb-char-overlay-button-hover-color,
-  var(--dof-color1, #4ac)
+  var(--lb-button-hover-color, #4ac)
 );
 $footer-border-color: var(
   --lb-char-overlay-footer-border-color,
-  var(--dof-color3)
+  var(--dof-color3, #000)
 );
 .characterOverlay {
   position: fixed;
@@ -26,6 +28,7 @@ $footer-border-color: var(
   padding: 18px 18px 28px;
   font-size: 1.4rem;
   overflow: hidden;
+  color: var(--lb-char-overlay-font-color, inherit);
 }
 
 .controls {
@@ -51,6 +54,7 @@ $footer-border-color: var(
 }
 
 .controlButton {
+  @include button-wrapper;
   path {
     fill: $icon-button-color;
   }
@@ -59,6 +63,10 @@ $footer-border-color: var(
       fill: $button-hover-color;
     }
   }
+}
+
+.footerItem{
+  @include flex-line-container;
 }
 
 .blurb {

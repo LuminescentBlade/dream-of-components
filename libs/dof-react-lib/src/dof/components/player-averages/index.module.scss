@@ -1,3 +1,5 @@
+@import './../../styles/mixins';
+
 $stat-table-main-border: var(
   --lb-averages-main-border,
   var(--dof-input-border, 1px solid #000)
@@ -29,7 +31,7 @@ $blossom-bg-rm: var(--lb-averages-blossom-bg-rm, var(--dof-bg-color, #fff));
   overflow: auto;
 }
 .statTable {
-  color: var(--lb-averages-font-color, inherit);
+  color: var(--lb-averages-font-color, var(--lb-char-overlay-font-color, inherit));
   max-width: 100%;
   text-align: center;
   border-collapse: collapse;
@@ -100,6 +102,14 @@ $blossom-bg-rm: var(--lb-averages-blossom-bg-rm, var(--dof-bg-color, #fff));
     }
   }
 }
+.iconButton{
+  @include icon-button;
+}
+
+.buttonWrapper{
+  @include button-wrapper;
+}
+
 .levelControls {
   display: flex;
   justify-content: space-between;

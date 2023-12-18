@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "publish-react": "nx run dof-react-lib:build && cd dist/libs/dof-react-lib && npm publish --access=public"
+    "publish-react": "cd libs/dof-react-lib && npm version patch && cd ../.. && nx run dof-react-lib:build && cd dist/libs/dof-react-lib && npm publish --access=public"
   },
   "private": true,
   "dependencies": {

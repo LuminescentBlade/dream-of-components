@@ -24,7 +24,9 @@ export function PlayerAverages({
         unpromotedClasses: any,
         levelCap?: number,
         promotedLevelCap?: number,
-        promotionLevelGate?: number
+        promotionLevelGate?: number,
+        displayFields?: string[],
+        disableCaps?: boolean,
         uiIcons: {
             removeBlossom: () => ReactNode,
             addBlossom: (limit: boolean) => ReactNode
@@ -61,13 +63,13 @@ export function PlayerAverages({
         // @ts-ignore
         const promotedClass = config?.promotedClasses[characterDef.promotesTo];
         // @ts-ignore
-        unpromotedCaps = config?.unpromotedClasses[characterDef.class].caps;
+        unpromotedCaps = config?.unpromotedClasses[characterDef.class].caps ?? {};
         promoBonuses = promotedClass.promo;
-        promotedCaps = promotedClass.caps;
+        promotedCaps = promotedClass.caps ?? {};
     } else {
         promotedLevelFloor = (characterDef.level ?? 1);
         // @ts-ignore
-        promotedCaps = config?.promotedClasses[characterDef.class]?.caps; // remove ? later 
+        promotedCaps = config?.promotedClasses[characterDef.class]?.caps ?? {}; // remove ? later 
     }
 
     const blossomData = getBlossomLevels();
@@ -292,45 +294,36 @@ export function PlayerAverages({
         let capped = false;
         const base = characterDef.stats[statKey];
         let value = base;
-        let growth = characterDef.growths ? (characterDef.growths[statKey] ?? 0) / 100 : 0;
-        if (promoBonuses) { // unpromoted unit
-            if (statKey === 'con') {
-                value = base;
-            } else {
-                value = calcStat(base, growth, false);
-                capped = value >= unpromotedCaps[statKey];
-            }
+        let growth = characterDef.growths ? (characterDef.growths[statKey] ?? 0) / 100 : null;
+        if (promoBonuses && growth != null) { // unpromoted unit
+            value = calcStat(base, growth, false);
+            const unpromotedCap = config?.disableCaps ? Number.MAX_SAFE_INTEGER : (unpromotedCaps[statKey] ?? Number.MAX_SAFE_INTEGER);
+            capped = value >= unpromotedCap;
             if (capped) {
-                value = unpromotedCaps[statKey];
+                value = unpromotedCap;
             }
             if (isPromoted()) {
                 // for capbreak edition set value to unpromoted caps if capped here or it'll mess with the calcs
-                if (statKey === 'con') {
-                    value = value + (promoBonuses[statKey] ?? 0);
-                } else {
-                    const promo1Stat = value + (promoBonuses[statKey] ?? 0);
-                    value = value = calcStat(promo1Stat, growth, true);
-                    capped = value >= promotedCaps[statKey];
-                }
+                const promo1Stat = value + (promoBonuses[statKey] ?? 0);
+                value = value = calcStat(promo1Stat, growth, true);
+                capped = value >= (promotedCaps[statKey] ?? Number.MAX_SAFE_INTEGER);
                 if (capped) {
                     value = promotedCaps[statKey];
                 }
             }
-        } else {
-            if (statKey === 'con') {
-                value = base;
-            } else {
-                value = calcStat(base, growth, true);
-                capped = value >= promotedCaps[statKey];
-                if (capped) { value = promotedCaps[statKey] }
-            }
-        }
+        } else if (growth != null) {
+            value = calcStat(base, growth, true);
+            capped = value >= promotedCaps[statKey];
+            if (capped) { value = promotedCaps[statKey] }
+        } else if (promoBonuses) {
+            value = value + (isPromoted() ? (promoBonuses[statKey] ?? 0) : 0);
+        } 
 
         return <td key={statKey} className={capped ? styles.capped : ''}>{value?.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
     }
 
     function renderStatChecker() {
-        const statKeys = Object.keys(promotedCaps ?? {});
+        const statKeys = config?.displayFields ?? Object.keys(promotedCaps ?? characterDef.stats);
         const result = <>
             {getStatInputBar(characterDef)}
             <div className={styles.tableWrapper}>

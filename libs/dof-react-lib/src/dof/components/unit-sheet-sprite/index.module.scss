@@ -2,7 +2,7 @@
 
 $name-font: var(
   --lb-unit-sheet-sprite-name-font,
-  var(--dof-kq-font, sans-serif)
+  inherit
 );
 $default-color-1: var(--lb-unit-sheet-default-1, #643e9b);
 $default-color-2: var(--lb-unit-sheet-default-2, #7c53b9);

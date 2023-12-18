@@ -95,6 +95,7 @@ $blossom-bg-rm: var(--lb-averages-blossom-bg-rm, var(--dof-bg-color, #fff));
     border-bottom: 2px solid $input-border;
     height: 30px;
     color: $input-text;
+    padding: 0 12px;
     &:focus {
       background-color: $input-bg-focus;
       outline: none;

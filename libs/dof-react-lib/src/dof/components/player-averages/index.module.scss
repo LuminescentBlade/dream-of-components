@@ -4,17 +4,17 @@ $stat-table-main-border: var(
   --lb-averages-main-border,
   var(--dof-input-border, 1px solid #000)
 );
-$row-label-size: var(--lb-averages-row-label-size, 69px);
-$data-size: var(--lb-averages-data-size, 45px);
+$row-label-size: var(--lb-averages-row-label-size, var(--lb-default-averages-data-size, 69px));
+$data-size: var(--lb-averages-data-size, var(--lb-default-averages-data-size, 45px));
 $header-color: var(--lb-averages-header-color, var(--dof-color4, #000));
 $blossom1: var(--lb-averages-blossom-1, var(--dof-color1, #fff));
 $blossom2: var(--lb-averages-blossom-2, var(--dof-color3, #fff));
-$input-border: var(--lb-averages-input-border-color, var(--dof-color1, #333));
+$input-border: var(--lb-averages-input-border-color, var(--dof-color2, #333));
 $input-bg: var(--lb-averages-input-bg-color, rgba(0, 0, 0, 0.1));
 $input-text: var(--lb-averages-input-font-color, var(--dof-color-text, #000));
 $input-border-focus: var(
   --lb-averages-input-border-focus,
-  var(--dof-color2, #3cf)
+  var(--dof-color1, #3cf)
 );
 $input-bg-focus: var(--lb-averages-input-bg-focus, rgba(0, 0, 0, 0.15));
 $capped-bg: var(--lb-averages-capped-bg, var(--dof-color1, #8ac));

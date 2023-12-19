@@ -14,6 +14,10 @@ $footer-border-color: var(
   var(--dof-color3, #000)
 );
 .characterOverlay {
+  --lb-default-averages-data-size: 45px;
+  --lb-default-num-stat-items: 8;
+  --lb-default-averages-row-label-size: 69px;
+
   position: fixed;
   max-height: 80vh;
   max-width: 80vw;
@@ -48,8 +52,8 @@ $footer-border-color: var(
   overflow: auto;
   box-sizing: content-box;
   min-width: calc(
-    var(--lb-num-stat-items, 8) * var(--lb-averages-data-size) +
-      var(--lb-averages-row-label-size)
+    var(--lb-num-stat-items, var(--lb-default-num-stat-items)) * var(--lb-averages-data-size, var(--lb-default-averages-data-size)) +
+      var(--lb-averages-row-label-size, var(--lb-default-averages-row-label-size))
   );
 }
 

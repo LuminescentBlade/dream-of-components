@@ -4,7 +4,7 @@ $stat-table-main-border: var(
   --lb-averages-main-border,
   var(--dof-input-border, 1px solid #000)
 );
-$row-label-size: var(--lb-averages-row-label-size, var(--lb-default-averages-data-size, 69px));
+$row-label-size: var(--lb-averages-row-label-size, var(--lb-default-averages-row-label-size, 69px));
 $data-size: var(--lb-averages-data-size, var(--lb-default-averages-data-size, 45px));
 $header-color: var(--lb-averages-header-color, var(--dof-color4, #000));
 $blossom1: var(--lb-averages-blossom-1, var(--dof-color1, #fff));

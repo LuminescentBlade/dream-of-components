@@ -31,7 +31,7 @@ export interface IUnit {
         npc?: IConditional;
         chapter?: IConditional;
     },
-    routeConfig?: any,
+    routeConfig?: IRouteConfig,
     isSpoiler?: boolean;
     secret?: boolean;
     fullSheetRenderOrderOverride?: number

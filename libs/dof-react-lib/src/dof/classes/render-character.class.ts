@@ -17,7 +17,7 @@ export class RenderCharacter extends RenderUnit {
     protected placements?: { value: string, chapter: number }[];
 
     set currentChapter(data: { chapter: number, route?: string } | undefined) {
-        const chapterData = this.renderRules?.renderAll ? { chapter: 99 } : data;
+        const chapterData = this.renderRules?.renderAll ? { chapter: Number.MAX_SAFE_INTEGER } : data;
         this.placements = chapterData ? this.getCharacterPlacements(chapterData) : undefined;
         const placement = this.placements ? this.placements[0] : undefined;
         const parsedCharacter = placement ? this.parseCharacter(placement) : undefined;

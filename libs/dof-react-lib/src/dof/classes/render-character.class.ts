@@ -32,6 +32,8 @@ export class RenderCharacter extends RenderUnit {
         return this.renderData;
     }
 
+    private readonly DEFAULT_PLACEMENT = { chapter: Number.MAX_SAFE_INTEGER, value: 'character' };
+
     private getCharacterPlacements(chapterData: { chapter: number, route?: string }) {
         const { bypassSpoiler, useEarliest } = this.renderRules;
         const { chapter, route } = chapterData;
@@ -40,7 +42,7 @@ export class RenderCharacter extends RenderUnit {
         }
         let placement: { value: string, chapter: number }[] | undefined;
         if (this.renderRules?.renderAll) {
-            return [{ value: 'character', chapter: 99 }];
+            return [this.DEFAULT_PLACEMENT];
         }
         if (!this.character.routeConfig) {
             return;
@@ -55,13 +57,14 @@ export class RenderCharacter extends RenderUnit {
 
     private getSinglePlacement(route: string | undefined | null, chapter: number, character: IUnit, useEarliest = false, showSecretPlayable = false) {
         let routeConfig;
-        if (route && character.routeConfig[route]) {
-            routeConfig = character.routeConfig[route];
-        } else if (character.routeConfig.allRoute) {
-            routeConfig = character.routeConfig.allRoute;
+        const characterRouteConfig = character?.routeConfig;
+        if (route && characterRouteConfig && characterRouteConfig[route]) {
+            routeConfig = characterRouteConfig[route];
+        } else if (characterRouteConfig?.allRoute) {
+            routeConfig = characterRouteConfig.allRoute;
         }
         if (!routeConfig) {
-            return;
+            return [this.DEFAULT_PLACEMENT];
         }
         const validStates = [];
         const checkByLatest = (config: number | number[], type: string) => {

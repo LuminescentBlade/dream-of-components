@@ -21,7 +21,7 @@ export interface IUnit {
     name: string;
     artists: string[];
     displayName?: string;
-    class?:string;
+    class?: string;
     alt?: {
         [name: string]: IAltConfig
     };
@@ -32,13 +32,16 @@ export interface IUnit {
         chapter?: IConditional;
     },
     routeConfig?: IRouteConfig,
+    // this is basically a single route routeConfig. routeConfig takes precedence over this, but if no routeconfig is there
+    // i will automatically conver this to allRoute routeconfig in the code.
+    characterStates?: ICharacterStateChapter,
     isSpoiler?: boolean;
     secret?: boolean;
     fullSheetRenderOrderOverride?: number
 }
 
 
-export type IConditional =  {
+export type IConditional = {
     chapter?: number;
     displayName?: string,
     swapPortrait?: string,

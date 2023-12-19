@@ -7,7 +7,7 @@ export class RenderUnit {
             default: pathFcn(unit.name),
             alts: unit.alt ? Object.keys(unit.alt).reduce((c, k) => ({ ...c, [k]: pathFcn(`${unit.name}_${k}`) }), {}) : {}
         };
-        this.character = { ...this.unit };
+        this.character = { ...this.unit, routeConfig: this.unit.routeConfig ?? (this.unit.characterStates ? { allRoute: this.unit.characterStates } : undefined) };
         this.character.displayName = this.character.displayName ?? this.capitalize(this.character.name);
         const unitAlts = this.unit.alt;
         if (unitAlts) {

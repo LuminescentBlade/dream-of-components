@@ -3,21 +3,26 @@
 import { UnitSheetSprite } from '../../components/unit-sheet-sprite';
 import styles from './index.module.scss'
 import { IRenderItemConfig } from './../../models/spritesheet.interfaces';
+import { ReactNode } from 'react';
 
-export function UnitSheet({ data, artistConfig, expansionState, toggleCharacter, getOnClick }: {
-    data: { [key: string]: IRenderItemConfig[] }, artistConfig: any, expansionState: Map<string, boolean>, toggleCharacter: (name: string) => () => void, getOnClick?: (character: any, state: any) => (() => void) | undefined
+export function UnitSheet({ data, artistConfig, expansionState, toggleCharacter, getOnClick, customCredits }: {
+    data: { [key: string]: IRenderItemConfig[] },
+    artistConfig: any, expansionState: Map<string, boolean>,
+    toggleCharacter: (name: string) => () => void,
+    getOnClick?: (character: any, state: any) => (() => void) | undefined
+    customCredits?: () => ReactNode
 }) {
     const sections = Object.keys(data) as string[];
     const artists = Object.entries(artistConfig);
 
 
-    return (<div id='unit-sheet' className={styles.base}>
+    return (<div id='unit-sheet' className={`${styles.base} lb-sprite-sheet`}>
         {
             // @ts-ignore
             sections
                 .filter((section: string) => data[section]?.length)
                 .map((section: string) => (
-                    <section key={section} className={`${styles.container} ${styles.spritesheet}`}>
+                    <section key={section} className={`${styles.container} ${styles.spritesheet} lb-sprite-sheet__section`}>
                         <h2>{section}</h2>
                         {
                             data[section]?.map((character: IRenderItemConfig) => {
@@ -43,19 +48,19 @@ export function UnitSheet({ data, artistConfig, expansionState, toggleCharacter,
                         }
                     </section>
                 ))}
-        <section className={styles.container}>
+        <section className={`${styles.container} lb-sprite-sheet__credits-container`}>
             <h2>Artist Credits</h2>
-            <ul className={styles.credits} id={'credits'}>
+            {customCredits ? customCredits() : <ul className={`${styles.credits} lb-sprite-sheet__credits`} id={'sprite-sheet-credits'}>
                 {
                     artists.map(([name, artist]: [string, any]) => (
                         <li key={name}>
-                            <div className={styles.artist} style={{ backgroundColor: `var(--dof-artist-${name})` }}>
+                            <div className={styles.artist} style={{ backgroundColor: `var(--lb-artist-${name})` }}>
                             </div>
                             {artist.name}
                         </li>
                     ))
                 }
-            </ul>
+            </ul>}
         </section>
     </div>);
 }

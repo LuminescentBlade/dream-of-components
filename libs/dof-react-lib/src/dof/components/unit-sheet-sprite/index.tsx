@@ -22,7 +22,7 @@ export function UnitSheetSprite({ type, characterDef, expanded, artistConfig, on
                     </ul>
                 </div>
                 {characterDef.artists.map(artist => (
-                    <div key={artist} className={styles.artist} style={{ backgroundColor: `var(--dof-artist-${artist})` }}></div>
+                    <div key={artist} className={styles.artist} style={{ backgroundColor: `var(--lb-artist-${artist})` }}></div>
                 ))}
             </button>
             { // @ts-ignore

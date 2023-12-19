@@ -1,5 +1,5 @@
 $item-size: 120px;
-$spritesheet-bg: #500f8c;
+$spritesheet-bg: var(--lb-sprite-sheet-bg, #500f8c);
 $max-item-count: 12;
 $artist-size: 10px;
 $header-height: 60px;

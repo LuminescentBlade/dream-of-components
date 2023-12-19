@@ -45,7 +45,7 @@ export class RenderCharacter extends RenderUnit {
             return [this.DEFAULT_PLACEMENT];
         }
         if (!this.character.routeConfig) {
-            return;
+            return [this.DEFAULT_PLACEMENT];
         }
         if (chapterData.route == null) {
             placement = this.getAllPlacement(chapter, this.character, useEarliest, bypassSpoiler);
@@ -64,7 +64,7 @@ export class RenderCharacter extends RenderUnit {
             routeConfig = characterRouteConfig.allRoute;
         }
         if (!routeConfig) {
-            return [this.DEFAULT_PLACEMENT];
+            return;
         }
         const validStates = [];
         const checkByLatest = (config: number | number[], type: string) => {

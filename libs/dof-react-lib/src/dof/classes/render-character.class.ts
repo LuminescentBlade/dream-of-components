@@ -66,7 +66,7 @@ export class RenderCharacter extends RenderUnit {
         if (!routeConfig) {
             return;
         }
-        const validStates = [];
+        const validStates: any[] = [];
         const checkByLatest = (config: number | number[], type: string) => {
             if (typeof config === 'number') {
                 if (config <= chapter) {
@@ -83,8 +83,8 @@ export class RenderCharacter extends RenderUnit {
             }
         }
 
-        if (routeConfig.player != null && routeConfig.player <= chapter && (!character.secret || showSecretPlayable)) {
-            validStates.push({ value: 'player', chapter: routeConfig.player });
+        if (routeConfig.player != null && (!character.secret || showSecretPlayable)) {
+            checkByLatest(routeConfig.player, 'player');
         }
         if (routeConfig.enemy != null) {
             checkByLatest(routeConfig.enemy, 'enemy');
@@ -110,11 +110,24 @@ export class RenderCharacter extends RenderUnit {
 
     private getAllPlacement(chapter: number, character: IUnit, useEarliest = false, showSecretPlayable = false) {
         // refactor to be more genericized to accept n routes
-        const placements: { value: string, chapter: number }[] = Object.keys(character.routeConfig!)
+        const placements = Object.keys(character.routeConfig!)
             // @ts-ignore
-            .reduce((total, route) => total.concat(this.getSinglePlacement(route, chapter, character, useEarliest, showSecretPlayable)), []);
+            .map((route) => {
+                const routePlacement = this.getSinglePlacement(route, chapter, character, useEarliest, showSecretPlayable);
+                if (routePlacement) {
+                    routePlacement.sort((a, b) => (useEarliest ? a!.chapter - b!.chapter : b!.chapter - a!.chapter));
+                    return routePlacement[0];
+                } else {
+                    return undefined;
+                }
+            }
+            )
+            .filter(placement => placement);
         if (!placements.length) {
             return undefined;
+        }
+        if (character.name === 'renair') {
+            console.log(placements);
         }
         placements.sort((a, b) => {
             if (useEarliest) {

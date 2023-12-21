@@ -9,10 +9,16 @@ I use css variables to color my components. Set these variables in your projects
 --lb-button-icon-color
 --lb-button-hover-color
 
+--lb-sprite-sheet-font-color
+--lb-sprite-sheet-header-font-color
+--lb-sprite-sheet-bg
+--lb-sprite-sheet-base-font-size
+
 --lb-char-overlay-bg-color
 --lb-char-overlay-icon-button-color 
 --lb-char-overlay-button-hover-color
 --lb-char-overlay-footer-border-color
+--lb-char-overlay-font-color
 
 --lb-npc-stat-border-color
 --lb-npc-stat-header-border-color
@@ -50,6 +56,7 @@ I use css variables to color my components. Set these variables in your projects
 --lb-toggle-border
 
 --lb-unit-sheet-sprite-name-font
+--lb-unit-sheet-sprite-font-size
 --lb-unit-sheet-default-1
 --lb-unit-sheet-default-2
 --lb-unit-sheet-player-1
@@ -62,6 +69,8 @@ I use css variables to color my components. Set these variables in your projects
 --lb-unit-sheet-generic-2
 --lb-unit-sheet-background-1
 --lb-unit-sheet-background-2
+--lb-unit-sheet-sprite-tooltip-font-color
+--lb-unit-sheet-sprite-tooltip-color
 ```
 
 

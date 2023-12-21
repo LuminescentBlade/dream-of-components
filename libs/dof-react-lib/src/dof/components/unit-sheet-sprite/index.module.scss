@@ -1,21 +1,18 @@
 @import './../../styles/mixins';
 
-$name-font: var(
-  --lb-unit-sheet-sprite-name-font,
-  inherit
-);
-$default-color-1: var(--lb-unit-sheet-default-1, #643e9b);
-$default-color-2: var(--lb-unit-sheet-default-2, #7c53b9);
-$player-color-1: var(--lb-unit-sheet-player-1, #1e85b0);
-$player-color-2: var(--lb-unit-sheet-player-2, #2398c9);
-$enemy-color-1: var(--lb-unit-sheet-enemy-1, #6e4640);
-$enemy-color-2: var(--lb-unit-sheet-enemy-2, #9b594f);
-$npc-color-1: var(--lb-unit-sheet-npc-1, #5f824f);
-$npc-color-2: var(--lb-unit-sheet-npc-2, #7ba866);
-$generic-color-1: var(--lb-unit-sheet-generic-1, #959266);
-$generic-color-2: var(--lb-unit-sheet-generic-2, #c0bd8d);
-$background-color-1: var(--lb-unit-sheet-background-1, #739e72);
-$background-color-2: var(--lb-unit-sheet-background-2, #84b583);
+$name-font: var(--lb-unit-sheet-sprite-name-font, inherit);
+$default-color-1: var(--lb-unit-sheet-sprite-default-1, #643e9b);
+$default-color-2: var(--lb-unit-sheet-sprite-default-2, #7c53b9);
+$player-color-1: var(--lb-unit-sheet-sprite-player-1, #1e85b0);
+$player-color-2: var(--lb-unit-sheet-sprite-player-2, #2398c9);
+$enemy-color-1: var(--lb-unit-sheet-sprite-enemy-1, #6e4640);
+$enemy-color-2: var(--lb-unit-sheet-sprite-enemy-2, #9b594f);
+$npc-color-1: var(--lb-unit-sheet-sprite-npc-1, #5f824f);
+$npc-color-2: var(--lb-unit-sheet-sprite-npc-2, #7ba866);
+$generic-color-1: var(--lb-unit-sheet-sprite-generic-1, #959266);
+$generic-color-2: var(--lb-unit-sheet-sprite-generic-2, #c0bd8d);
+$background-color-1: var(--lb-unit-sheet-sprite-background-1, #739e72);
+$background-color-2: var(--lb-unit-sheet-sprite-background-2, #84b583);
 $artist-size: 7px;
 
 .wrapper {
@@ -51,7 +48,7 @@ $artist-size: 7px;
   align-items: center;
   justify-content: space-between;
   font-family: $name-font;
-  font-size: 1.8rem;
+  font-size: var(--lb-unit-sheet-sprite-font-size, 1.1em);
   font-weight: 100;
   letter-spacing: 0.07em;
   text-align: right;
@@ -104,9 +101,9 @@ $artist-size: 7px;
     position: absolute;
     top: -3px;
     left: -3px;
-    color: #fff;
+    color: var(--lb-unit-sheet-sprite-tooltip-font-color, #fff);
     padding: 12px 16px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--lb-unit-sheet-sprite-tooltip-color, rgba(0, 0, 0, 0.7));
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
     text-align: left;
@@ -146,6 +143,6 @@ $artist-size: 7px;
   cursor: pointer;
 }
 
-.characterButton{
+.characterButton {
   @include button-wrapper;
 }

@@ -12,7 +12,6 @@ let cachedState: any = {
     resetState: false
 };
 
-
 export function CharacterOverlay(
     {
         clear,

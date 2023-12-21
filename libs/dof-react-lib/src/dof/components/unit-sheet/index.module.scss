@@ -4,10 +4,11 @@ $max-item-count: 12;
 $artist-size: 10px;
 $header-height: 60px;
 .base {
-  color: #fff;
+  color: var(--lb-sprite-sheet-font-color, #fff);
   --spritesheet-item-count: #{$max-item-count};
   width: calc(var(--spritesheet-item-count) * #{$item-size});
   margin: 0 auto;
+  font-size: var(--lb-sprite-sheet-base-font-size, inherit);
 
   @for $i from $max-item-count through 1 {
     @media screen and (max-width: ($item-size * ($i + 1.5))) {
@@ -15,8 +16,8 @@ $header-height: 60px;
     }
   }
   h2 {
-    font-size: 2.8rem;
-    color: white;
+    font-size: var(--lb-sprite-sheet-header-font-size, 1.3em);
+    color: var(--lb-sprite-sheet-header-font-color, var(--lb-sprite-sheet-font-color, #fff));
     padding-left: 12px;
     line-height: $header-height;
     text-transform: capitalize;

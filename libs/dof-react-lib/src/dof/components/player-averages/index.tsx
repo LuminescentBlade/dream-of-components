@@ -11,7 +11,8 @@ let currentCharacter: string | undefined;
 
 export function PlayerAverages({
     characterDef,
-    config
+    config,
+    onDataChange
 }: {
     characterDef: IPlayableUnitStats
     config?: {
@@ -33,7 +34,8 @@ export function PlayerAverages({
             addBlossom: (limit: boolean) => ReactNode
         }
         // todo: FE4 style levels dont reset
-    }
+    },
+    onDataChange?: (data: any) => void
 }) {
     const enableBlossomDew = config?.enableBlossomDew ?? false;
     const BLOSSOM_VALUE = config?.blossomValue ?? 5;
@@ -48,6 +50,7 @@ export function PlayerAverages({
     const defaultLevels = getDefaultLevelByCharacter(characterDef);
     const [levelData, setLevelData] = useState(defaultLevels);
     const [widgetState, setWidgetState] = useState(cachedState);
+    emitData();
 
     currentCharacter = characterDef.name;
 
@@ -74,6 +77,14 @@ export function PlayerAverages({
     }
 
     const blossomData = getBlossomLevels();
+
+    function emitData() {
+        if (onDataChange) {
+            const { unpromotedLevel, promotedLevel } = levelData;
+            const exportData = { promotedLevel, unpromotedLevel, blossomEnabled: widgetState.blossom.length > 0 };
+            onDataChange(exportData);
+        }
+    }
 
     function setWidgetStateCaching(widgetStateData: any) {
         cachedState = widgetStateData;
@@ -105,6 +116,8 @@ export function PlayerAverages({
             setLevelData({ ...levelData, promotedLevel: calculatedLevel, promotedDisplay: calculatedLevel });
         }
     }
+
+
 
     function isPromoted(): boolean {
         // this will evaluate to a boolean no matter what trust me ts lint
@@ -189,8 +202,7 @@ export function PlayerAverages({
                         {
                             !item.isCharacterPromoted ? <button
                                 className={
-                                    `${styles.iconButton} ${
-                                        !item.isCharacterPromoted ? styles[`iconButton--${item.isLevelPromoted ? 'actived' : 'inactive'} `] : ''
+                                    `${styles.iconButton} ${!item.isCharacterPromoted ? styles[`iconButton--${item.isLevelPromoted ? 'actived' : 'inactive'} `] : ''
                                     } icon-master-seal lb-averages-blossom__${item.isLevelPromoted ? 'promoted' : 'unpromoted'} `
                                 }
                                 onClick={() => toggleBlossomPromotion(index)}

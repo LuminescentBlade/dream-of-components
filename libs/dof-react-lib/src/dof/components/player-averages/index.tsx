@@ -9,6 +9,9 @@ let cachedState: any = {
 
 let currentCharacter: string | undefined;
 
+let lastStatKeyLength = 0;
+let lastDataEmitted: any;
+
 export function PlayerAverages({
     characterDef,
     config,
@@ -28,7 +31,8 @@ export function PlayerAverages({
         promotionLevelGate?: number,
         displayFields?: string[],
         disableCaps?: boolean,
-        disableCapRowDisplay?: boolean
+        disableCapRowDisplay?: boolean,
+        disablePercentageDisplay?: boolean
         uiIcons: {
             removeBlossom: () => ReactNode,
             addBlossom: (limit: boolean) => ReactNode
@@ -43,14 +47,12 @@ export function PlayerAverages({
     const LEVEL_CAP = config?.levelCap ?? 20;
     const PROMOTED_LEVEL_CAP = config?.promotedLevelCap ?? LEVEL_CAP;
     const PROMOTION_LEVEL_GATE = config?.promotionLevelGate ?? 10;
-    if (currentCharacter != characterDef.name) {
+    if (currentCharacter !== characterDef.name) {
         cachedState.blossom = [];
     }
-
     const defaultLevels = getDefaultLevelByCharacter(characterDef);
     const [levelData, setLevelData] = useState(defaultLevels);
     const [widgetState, setWidgetState] = useState(cachedState);
-    emitData();
 
     currentCharacter = characterDef.name;
 
@@ -58,6 +60,8 @@ export function PlayerAverages({
         (defaultLevels.unpromotedLevel && (levelData.unpromotedLevel ?? -1) < defaultLevels.unpromotedLevel)) {
         setLevelData(defaultLevels);
     }
+
+    emitData();
 
     const unpromotedLevelFloor = (characterDef.level ?? 1);
     let promoBonuses: IStats | undefined = undefined;
@@ -75,14 +79,22 @@ export function PlayerAverages({
         // @ts-ignore
         promotedCaps = config?.promotedClasses[characterDef.class]?.caps ?? {}; // remove ? later 
     }
-
     const blossomData = getBlossomLevels();
+    const statKeys = config?.displayFields ?? Object.keys(promotedCaps ?? characterDef.stats);
+    if (lastStatKeyLength !== statKeys.length) {
+        document.documentElement.style.setProperty('--lb-default-num-stat-items', `${statKeys.length}`);
+        lastStatKeyLength = statKeys.length;
+    }
 
-    function emitData() {
-        if (onDataChange) {
-            const { unpromotedLevel, promotedLevel } = levelData;
-            const exportData = { promotedLevel, unpromotedLevel, blossomEnabled: widgetState.blossom.length > 0 };
-            onDataChange(exportData);
+    function emitData(dataChange?: any, blossom?: boolean) {
+        if (!onDataChange) { return; }
+        const { unpromotedLevel, promotedLevel } = (dataChange ?? levelData);
+        const exportData = { promotedLevel, unpromotedLevel, blossomEnabled: blossom ?? widgetState.blossom.length > 0 };
+        if (lastDataEmitted == null ||
+            lastDataEmitted.promotedLevel !== promotedLevel ||
+            lastDataEmitted.unpromotedLevel !== unpromotedLevel ||
+            lastDataEmitted.blossomEnabled !== exportData.blossomEnabled) {
+            lastDataEmitted = exportData;
         }
     }
 
@@ -102,6 +114,7 @@ export function PlayerAverages({
                 newData.promotedLevel = 0;
                 newData.promotedDisplay = 0;
             }
+            emitData(newData);
             setLevelData(newData);
         }
     };
@@ -113,7 +126,9 @@ export function PlayerAverages({
             setLevelData({ ...levelData, promotedDisplay: event.currentTarget.value });
         } else {
             const calculatedLevel = Math.min(value, PROMOTED_LEVEL_CAP);
-            setLevelData({ ...levelData, promotedLevel: calculatedLevel, promotedDisplay: calculatedLevel });
+            const newData = { ...levelData, promotedLevel: calculatedLevel, promotedDisplay: calculatedLevel };
+            emitData(newData);
+            setLevelData(newData);
         }
     }
 
@@ -145,9 +160,10 @@ export function PlayerAverages({
             const defaultLevel = defaultLevels.promotedLevel || defaultLevels.unpromotedLevel;
 
             const blossomItem = { level: defaultLevel, displayLevel: defaultLevel, isLevelPromoted, isCharacterPromoted };
-
+            emitData(undefined, true);
             setWidgetStateCaching({ ...widgetState, blossom: [...widgetState.blossom, blossomItem] });
         } else {
+            emitData(undefined, true);
             setWidgetStateCaching({ ...widgetState, blossom: [...widgetState.blossom, { ...widgetState.blossom[widgetState.blossom.length - 1] }] });
         }
 
@@ -156,7 +172,7 @@ export function PlayerAverages({
     function removeBlossom(index: number) {
         const newBlossom = [...widgetState.blossom];
         newBlossom.splice(index, 1);
-
+        emitData(undefined, newBlossom.length > 0);
         setWidgetStateCaching({ ...widgetState, blossom: newBlossom })
     }
 
@@ -309,7 +325,7 @@ export function PlayerAverages({
         let capped = false;
         const base = characterDef.stats[statKey];
         let value = base;
-        let growth = characterDef.growths ? (characterDef.growths[statKey] ?? 0) / 100 : null;
+        const growth = characterDef.growths && characterDef.growths[statKey] ? (characterDef.growths[statKey] / 100) : null;
         if (promoBonuses && growth != null) { // unpromoted unit
             value = calcStat(base, growth, false);
             const unpromotedCap = config?.disableCaps ? Number.MAX_SAFE_INTEGER : (unpromotedCaps[statKey] ?? Number.MAX_SAFE_INTEGER);
@@ -338,7 +354,7 @@ export function PlayerAverages({
     }
 
     function renderStatChecker() {
-        const statKeys = config?.displayFields ?? Object.keys(promotedCaps ?? characterDef.stats);
+
         const result = <>
             {getStatInputBar(characterDef)}
             <div className={`lb-averages ${styles.tableWrapper}`}>
@@ -360,7 +376,10 @@ export function PlayerAverages({
                         {characterDef.growths ?
                             <tr className='lb-averages__growths-row'>
                                 <th className={`${styles.capitalize} ${styles[`growthsHeader${blossomData.currentLevelBlossomCount}`]}`}>growths</th>
-                                {statKeys.map(s => <td key={s} >{characterDef.growths && characterDef.growths[s] != null ? `${characterDef.growths[s] + BLOSSOM_VALUE * blossomData.currentLevelBlossomCount}%` : '--'}</td>)}
+                                {statKeys.map(s => <td key={s} >{
+                                    characterDef.growths && characterDef.growths[s] != null ?
+                                        `${characterDef.growths[s] + BLOSSOM_VALUE * blossomData.currentLevelBlossomCount}${!config?.disablePercentageDisplay ? '%' : ''}` :
+                                        '--'}</td>)}
                             </tr>
                             : ''
                         }

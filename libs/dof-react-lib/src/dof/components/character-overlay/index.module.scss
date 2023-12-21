@@ -15,7 +15,6 @@ $footer-border-color: var(
 );
 .characterOverlay {
   --lb-default-averages-data-size: 45px;
-  --lb-default-num-stat-items: 8;
   --lb-default-averages-row-label-size: 69px;
 
   position: fixed;
@@ -51,10 +50,11 @@ $footer-border-color: var(
   padding: 12px;
   overflow: auto;
   box-sizing: content-box;
-  min-width: calc(
-    var(--lb-num-stat-items, var(--lb-default-num-stat-items)) * var(--lb-averages-data-size, var(--lb-default-averages-data-size)) +
-      var(--lb-averages-row-label-size, var(--lb-default-averages-row-label-size))
-  );
+  @include averages-min-width;
+}
+
+.data{
+  flex: 1;
 }
 
 .controlButton {
@@ -69,7 +69,7 @@ $footer-border-color: var(
   }
 }
 
-.footerItem{
+.footerItem {
   @include flex-line-container;
 }
 

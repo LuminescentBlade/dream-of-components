@@ -51,3 +51,10 @@
     fill: var(--lb-button-icon-hover);
   }
 }
+
+@mixin averages-min-width{
+  min-width: calc(
+    var(--lb-num-stat-items, var(--lb-default-num-stat-items)) * var(--lb-averages-data-size, var(--lb-default-averages-data-size)) +
+      var(--lb-averages-row-label-size, var(--lb-default-averages-row-label-size))
+  );
+}

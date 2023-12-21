@@ -32,6 +32,7 @@ $blossom-bg-rm: var(--lb-averages-blossom-bg-rm, var(--dof-bg-color, #fff));
 }
 .statTable {
   color: var(--lb-averages-font-color, var(--lb-char-overlay-font-color, inherit));
+  @include averages-min-width;
   max-width: 100%;
   text-align: center;
   border-collapse: collapse;

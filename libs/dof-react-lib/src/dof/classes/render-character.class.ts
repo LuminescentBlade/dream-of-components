@@ -126,9 +126,6 @@ export class RenderCharacter extends RenderUnit {
         if (!placements.length) {
             return undefined;
         }
-        if (character.name === 'renair') {
-            console.log(placements);
-        }
         placements.sort((a, b) => {
             if (useEarliest) {
                 return a!.chapter - b!.chapter;

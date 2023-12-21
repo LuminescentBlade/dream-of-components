@@ -27,6 +27,7 @@ export function PlayerAverages({
         promotionLevelGate?: number,
         displayFields?: string[],
         disableCaps?: boolean,
+        disableCapRowDisplay?: boolean
         uiIcons: {
             removeBlossom: () => ReactNode,
             addBlossom: (limit: boolean) => ReactNode
@@ -175,26 +176,28 @@ export function PlayerAverages({
 
 
     function getBlossomWidget() {
-        return <div className={styles.blossomWidget}>
+        return <div className={`lb-averages-blossom ${styles.blossomWidget}`}>
             {
-                <button className={`${styles.blossomButton} ${styles.iconButton} ${styles.buttonWrapper}`} onClick={addBlossom} disabled={widgetState.blossom.length >= BLOSSOM_LIMIT}>
+                <button className={`${styles.blossomButton} ${styles.iconButton} ${styles.buttonWrapper} lb-averages-blossom__add`} onClick={addBlossom} disabled={widgetState.blossom.length >= BLOSSOM_LIMIT}>
                     {config?.uiIcons?.addBlossom ? config.uiIcons.addBlossom(widgetState.blossom.length < BLOSSOM_LIMIT) : (widgetState.blossom.length < BLOSSOM_LIMIT) ? '+ Metis Tome' : ''}
                 </button>
             }
             {
                 widgetState.blossom.map(
-                    (item: any, index: number) => <div key={index} className={styles.blossomItem}>
+                    (item: any, index: number) => <div key={index} className={`${styles.blossomItem} lb-averages-blossom__item`}>
                         Lv. <input type="number" value={widgetState.blossom[index].displayLevel} onChange={(value) => setBlossomLevel(index, value)} />
                         {
                             !item.isCharacterPromoted ? <button
                                 className={
-                                    `${styles.iconButton} ${!item.isCharacterPromoted ? styles[`iconButton--${item.isLevelPromoted ? 'actived' : 'inactive'} `] : ''} icon-master-seal`
+                                    `${styles.iconButton} ${
+                                        !item.isCharacterPromoted ? styles[`iconButton--${item.isLevelPromoted ? 'actived' : 'inactive'} `] : ''
+                                    } icon-master-seal lb-averages-blossom__${item.isLevelPromoted ? 'promoted' : 'unpromoted'} `
                                 }
                                 onClick={() => toggleBlossomPromotion(index)}
                             >
                             </button> : ''
                         }
-                        <button className={`${styles.removeBlossom} ${styles.buttonWrapper}`} onClick={() => removeBlossom(index)}>
+                        <button className={`${styles.removeBlossom} ${styles.buttonWrapper} lb-averages-blossom__remove`} onClick={() => removeBlossom(index)}>
                             {config?.uiIcons?.addBlossom ? config.uiIcons.removeBlossom() : '-'}
                         </button>
                     </div>
@@ -206,12 +209,12 @@ export function PlayerAverages({
         if (!characterDef.stats || !characterDef.growths) {
             return;
         }
-        return <div className={styles.levelControls}>
+        return <div className={`lb-averages-controls ${styles.levelControls}`}>
             {characterDef.stats && characterDef.growths ?
-                <div className={styles.levelInputs}>
+                <div className={`lb-averages-controls__levels ${styles.levelInputs}`}>
                     {
                         promoBonuses && levelData.unpromotedLevel ?
-                            <div className={styles.levelInputGroup}>
+                            <div className={`lb-averages-controls__unpromoted-levels lb-averages-controls__level-input-group ${styles.levelInputGroup}`}>
                                 <label>Unpromoted</label>
                                 <input type="number" value={levelData.unpromotedDisplay} onChange={setUnpromotedLevel} />
                             </div>
@@ -220,7 +223,7 @@ export function PlayerAverages({
                     }
                     {
                         !promoBonuses || (levelData.unpromotedLevel && levelData.unpromotedLevel >= PROMOTION_LEVEL_GATE) ?
-                            <div className={styles.levelInputGroup}>
+                            <div className={`lb-averages-controls__promoted-levels lb-averages-controls__level-input-group ${styles.levelInputGroup}`}>
                                 <label>Promoted</label>
                                 <input type="number" value={levelData.promotedDisplay} onChange={setPromotedLevel} />
                             </div>
@@ -317,47 +320,47 @@ export function PlayerAverages({
             if (capped) { value = promotedCaps[statKey] }
         } else if (promoBonuses) {
             value = value + (isPromoted() ? (promoBonuses[statKey] ?? 0) : 0);
-        } 
+        }
 
-        return <td key={statKey} className={capped ? styles.capped : ''}>{value?.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
+        return <td key={statKey} className={`${capped ? styles.capped : ''} lb-averages__capped-stat`}>{value?.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
     }
 
     function renderStatChecker() {
         const statKeys = config?.displayFields ?? Object.keys(promotedCaps ?? characterDef.stats);
         const result = <>
             {getStatInputBar(characterDef)}
-            <div className={styles.tableWrapper}>
-                <table className={styles.statTable}>
+            <div className={`lb-averages ${styles.tableWrapper}`}>
+                <table className={`lb-averages__table ${styles.statTable}`}>
                     <thead>
                         <tr>
                             <td className={styles.rowHeader}></td>
-                            {statKeys.map(s => <td key={s} className={`${styles.colHeader} capitalize`}>{s}</td>)}
+                            {statKeys.map(s => <td key={s} className={`${styles.colHeader} ${styles.capitalize}`}>{s}</td>)}
                         </tr>
                     </thead>
                     <tbody>
                         {characterDef.stats ?
-                            <tr>
-                                <th className='capitalize'>bases</th>
+                            <tr className='lb-averages__stats-row'>
+                                <th className={`${styles.capitalize}`}>bases</th>
                                 {statKeys.map(s => <td key={s}>{characterDef.stats ? characterDef.stats[s] : ''}</td>)}
                             </tr>
                             : ''
                         }
                         {characterDef.growths ?
-                            <tr>
-                                <th className={`capitalize ${styles[`growthsHeader${blossomData.currentLevelBlossomCount}`]}`}>growths</th>
+                            <tr className='lb-averages__growths-row'>
+                                <th className={`${styles.capitalize} ${styles[`growthsHeader${blossomData.currentLevelBlossomCount}`]}`}>growths</th>
                                 {statKeys.map(s => <td key={s} >{characterDef.growths && characterDef.growths[s] != null ? `${characterDef.growths[s] + BLOSSOM_VALUE * blossomData.currentLevelBlossomCount}%` : '--'}</td>)}
                             </tr>
                             : ''
                         }
                         {promoBonuses != null ?
-                            <tr>
-                                <th className='capitalize'>Promo</th>
+                            <tr className='lb-averages__promo-row'>
+                                <th className={`${styles.capitalize}`}>Promo</th>
                                 {statKeys.map(s => <td key={s} >{promoBonuses![s]}</td>)}
                             </tr>
                             : ''
                         }
                         {characterDef.stats && characterDef.growths ?
-                            <tr className={styles.avgs}>
+                            <tr className={`${styles.avgs} lb-averages__averages-row`}>
 
                                 <th>Lv.{
                                     //@ts-ignore
@@ -370,10 +373,10 @@ export function PlayerAverages({
                             </tr>
                             : ''
                         }
-                        <tr className={styles.caps}>
-                            <th className='capitalize'>caps</th>
+                        {!config?.disableCapRowDisplay ? <tr className={`lb-averages__caps-row ${styles.caps}`}>
+                            <th className={`${styles.capitalize}`}>caps</th>
                             {statKeys.map(s => <td key={s} >{promotedCaps[s]}</td>)}
-                        </tr>
+                        </tr> : ''}
                     </tbody>
                 </table>
             </div>

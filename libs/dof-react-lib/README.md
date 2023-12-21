@@ -19,6 +19,7 @@ I use css variables to color my components. Set these variables in your projects
 --lb-char-overlay-button-hover-color
 --lb-char-overlay-footer-border-color
 --lb-char-overlay-font-color
+--lb-char-overlay-font-size
 
 --lb-npc-stat-border-color
 --lb-npc-stat-header-border-color

@@ -183,6 +183,10 @@ button.removeBlossom {
   background-color: $capped-bg;
 }
 
+.capitalize{
+  text-transform: capitalize;
+}
+
 @media screen and (max-width: 600px) {
   .levelControls {
     margin-bottom: 12px;

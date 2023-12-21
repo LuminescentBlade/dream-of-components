@@ -30,7 +30,7 @@ $footer-border-color: var(
   border-radius: 4px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
   padding: 18px 18px 28px;
-  font-size: 1.4rem;
+  font-size: var(--lb-char-overlay-font-size, 0.9em);
   overflow: hidden;
   color: var(--lb-char-overlay-font-color, inherit);
 }

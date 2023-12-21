@@ -22,6 +22,7 @@ export interface IUnit {
     artists: string[];
     displayName?: string;
     class?: string;
+    path?: string;
     alt?: {
         [name: string]: IAltConfig
     };

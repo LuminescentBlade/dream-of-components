@@ -1,3 +1,5 @@
+import { INonPlayableUnitStats, IPlayableUnitStats } from "./units.interfaces";
+
 export interface IRenderItem {
     name: string,
     artists: string[],
@@ -17,10 +19,11 @@ export interface IRenderCharacterConfig extends IRenderItemConfig {
     chapter: number,
     route?: string,
 };
-export interface IUnit {
+export interface IUnit extends IPlayableUnitStats {
     name: string;
     artists: string[];
     displayName?: string;
+    level?: number,
     class?: string;
     path?: string;
     alt?: {
@@ -30,7 +33,7 @@ export interface IUnit {
         player?: IConditional;
         enemy?: IConditional;
         npc?: IConditional;
-        chapter?: IConditional;
+        chapter?: IConditional | IConditional[];
     },
     routeConfig?: IRouteConfig,
     // this is basically a single route routeConfig. routeConfig takes precedence over this, but if no routeconfig is there
@@ -38,7 +41,9 @@ export interface IUnit {
     characterStates?: ICharacterStateChapter,
     isSpoiler?: boolean;
     secret?: boolean;
-    fullSheetRenderOrderOverride?: number
+    fullSheetRenderOrderOverride?: number,
+    bossStats?: INonPlayableUnitStats[],
+    npcStats?: INonPlayableUnitStats[]
 }
 
 

@@ -32,7 +32,7 @@ export function PlayerAverages({
         displayFields?: string[],
         disableCaps?: boolean,
         disableCapRowDisplay?: boolean,
-        disablePercentageDisplay?: boolean
+        disablePercentageDisplay?: boolean,
         uiIcons: {
             removeBlossom: () => ReactNode,
             addBlossom: (limit: boolean) => ReactNode
@@ -95,6 +95,7 @@ export function PlayerAverages({
             lastDataEmitted.unpromotedLevel !== unpromotedLevel ||
             lastDataEmitted.blossomEnabled !== exportData.blossomEnabled) {
             lastDataEmitted = exportData;
+            onDataChange(exportData);
         }
     }
 

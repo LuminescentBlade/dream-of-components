@@ -1,7 +1,6 @@
 import { RenderUnit } from "./render-unit.class";
 import { IRenderCharacterConfig, IUnit } from "../models/spritesheet.interfaces";
-
-// TODO: have a DoFCharacter class that extends this
+import { INonPlayableUnitStats } from "../models";
 
 export class RenderCharacter extends RenderUnit {
     constructor(
@@ -157,6 +156,35 @@ export class RenderCharacter extends RenderUnit {
             return characterItem;
         }
     }
+    private mergeNPCData(data: INonPlayableUnitStats[], unitData: IUnit, chapter: number, route?: string) {
+        return data
+            .filter(
+                (item: INonPlayableUnitStats) => item.chapter <= chapter &&
+                    (!item.route || !route || item.route === route)
+            )
+            .map(
+                (item: INonPlayableUnitStats) => ({
+                    ...item,
+                    level: item.level ?? unitData.level,
+                    stats: item.stats ?? unitData.stats,
+                    ranks: item.ranks ?? unitData.ranks,
+                    class: item.class ?? unitData.class
+                })
+            );
+
+    }
+
+    private getMostRecent(data: INonPlayableUnitStats[], chapter: number) {
+        return [...data].sort((a, b) => b.chapter - a.chapter).find(item => item.chapter <= chapter);
+    }
+
+    private handleNonPlayerData(data: INonPlayableUnitStats[], unitData: IUnit, chapter: number, route?: string) {
+        const newData = this.mergeNPCData(data, unitData, chapter, route);
+        return {
+            mostRecent: this.getMostRecent(newData, chapter),
+            data: newData
+        };
+    }
 
     private getRenderItems(unit: IUnit, chapterConfig: { chapter: number, route?: string }, placement: { value: string, chapter: number }): IRenderCharacterConfig {
         let defaultDisplay = { name: unit.name, displayName: unit.displayName, path: this.urls.default, artists: unit.artists };
@@ -166,10 +194,48 @@ export class RenderCharacter extends RenderUnit {
         // check conditionals
         // consolidate unit type vs chapter based conditionals and then apply them all
         // chapter based override unit type based if chapter > placement.chapter, if equal or less then unit type
-        let newDisplayName, swapPortrait: string, ogPortraitName, className;
+        let newDisplayName, swapPortrait: string, ogPortraitName, className, bossStats, npcStats, mostRecentBoss, mostRecentNpc;
+        let level = unit.level;
         const customConditionalCache: any = {};
+        if (unit.bossStats) {
+            const result = this.handleNonPlayerData(unit.bossStats, unit, chapter, route);
+            mostRecentBoss = result.mostRecent;
+            bossStats = result.data;
+        }
+        if (unit.npcStats) {
+            const result = this.handleNonPlayerData(unit.npcStats, unit, chapter, route);
+            mostRecentNpc = result.mostRecent;
+            npcStats = result.data;
+        }
+        if (mostRecentBoss || mostRecentNpc) {
+            const mostRecent = (mostRecentBoss && mostRecentBoss.chapter > (mostRecentNpc?.chapter ?? -1)) ?
+                { value: 'enemy', data: mostRecentBoss } : { value: 'npc', data: mostRecentNpc };
+
+            if (placement.value === mostRecent.value) {
+                level = mostRecent.data?.level ?? level;
+                className = mostRecent.data?.class ?? className;
+            }
+        }
+
         if (unit.conditional) {
-            const chapterConditionals = unit.conditional.chapter && unit.conditional.chapter.chapter! <= chapter ? unit.conditional.chapter : null;
+            const chapterConditionals = (() => {
+                if (!Array.isArray(unit.conditional.chapter)) {
+                    return unit.conditional.chapter && unit.conditional.chapter.chapter! <= chapter ? unit.conditional.chapter : null;
+                } else {
+                    if (unit.conditional.chapter.length <= 0) {
+                        return null;
+                    }
+                    let mostRecentChapter;
+                    for (let chapterDef of unit.conditional.chapter) {
+                        if (chapterDef.chapter! <= chapter) {
+                            mostRecentChapter = chapterDef;
+                        } else {
+                            break;
+                        }
+                    }
+                    return mostRecentChapter;
+                }
+            })();
             // @ts-ignore
             const typeConditionals = unit.conditional[placement.value];
             if (chapterConditionals && typeConditionals) {
@@ -184,7 +250,7 @@ export class RenderCharacter extends RenderUnit {
                 newDisplayName = primary.displayName ?? secondary.displayName;
                 swapPortrait = primary.swapPortrait ?? secondary.swapPortrait;
                 ogPortraitName = primary.ogPortraitName ?? secondary.ogPortraitName;
-                className = primary.class ?? secondary.class;
+                className = primary.class ?? secondary.class ?? className;
                 this.conditionalFields.forEach(field => {
                     customConditionalCache[field] = primary[field] ?? secondary[field];
                 });
@@ -194,12 +260,13 @@ export class RenderCharacter extends RenderUnit {
                 newDisplayName = conditionals.displayName;
                 swapPortrait = conditionals.swapPortrait;
                 ogPortraitName = conditionals.ogPortraitName;
-                className = conditionals.class;
+                className = conditionals.class ?? className;
                 this.conditionalFields.forEach(field => {
                     customConditionalCache[field] = conditionals[field];
                 });
             }
         }
+
         // @ts-ignore
         if (swapPortrait && unit.alt && unit.alt[swapPortrait]) { // ogPortraitName is always configured for swapPortrait otherwise it doesn't do anything
             const swapItem = unit.alt[swapPortrait];
@@ -220,7 +287,14 @@ export class RenderCharacter extends RenderUnit {
             alts = alts ? [defaultSwap, ...alts] : [defaultSwap];
         }
 
-        const newUnitData = { ...unit, path: defaultDisplay.path, class: className ?? unit?.class };
+        const newUnitData = { 
+            ...unit,
+            path: defaultDisplay.path,
+            class: className ?? unit?.class,
+            level: level ?? unit?.level,
+            bossStats,
+            npcStats
+        };
         this.conditionalFields.forEach(field => {
             // @ts-ignore
             newUnitData[field] = customConditionalCache[field] ?? newUnitData[field];

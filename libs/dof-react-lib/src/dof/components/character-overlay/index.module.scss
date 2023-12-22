@@ -31,7 +31,15 @@ $footer-border-color: var(
   padding: 18px 18px 28px;
   font-size: var(--lb-char-overlay-font-size, 0.9em);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   color: var(--lb-char-overlay-font-color, inherit);
+  @media screen and (max-width: 600px) {
+    --lb-default-averages-data-size: 35px;
+    .data{
+      overflow: hidden;
+    }
+  }
 }
 
 .controls {
@@ -44,17 +52,22 @@ $footer-border-color: var(
 .content {
   display: flex;
   gap: 6px;
+  flex:1;
+  overflow: hidden;
 }
 
 .dataContent {
+  flex: 1;
   padding: 12px;
   overflow: auto;
   box-sizing: content-box;
   @include averages-min-width;
 }
 
-.data{
+.data {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .controlButton {
@@ -104,3 +117,4 @@ $footer-border-color: var(
     font-size: 0.8em;
   }
 }
+

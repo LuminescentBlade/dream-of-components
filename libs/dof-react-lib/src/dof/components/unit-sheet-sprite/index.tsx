@@ -1,9 +1,11 @@
+import { ReactNode } from "react";
 import { IRenderItem } from "./../../models/spritesheet.interfaces";
 import styles from './index.module.scss';
 
-export function UnitSheetSprite({ type, characterDef, expanded, artistConfig, onExpand, onCharacterClick }: {
+export function UnitSheetSprite({ type, characterDef, expanded, artistConfig, onExpand, onCharacterClick, appendTooltip }: {
     type: string, characterDef: IRenderItem, artistConfig: any, expanded?: boolean, onExpand?: () => void,
-    onCharacterClick?: () => void
+    onCharacterClick?: () => void,
+    appendTooltip?: (item: IRenderItem, labelClass?: string) => ReactNode
 }) {
     const artistConfiguration = artistConfig ?? {};
     return (<div className={`${styles.wrapper} lb-unit-sheet-sprite`}>
@@ -22,6 +24,7 @@ export function UnitSheetSprite({ type, characterDef, expanded, artistConfig, on
                             <li className='lb-unit-sheet-sprite__sprite-artist' key={artist}>{artistConfiguration[artist]?.name ?? artist}</li>
                         ))}
                     </ul>
+                    {appendTooltip ? appendTooltip(characterDef, `${styles.label} lb-unit-sheet-sprite__tooltip-label`) : ''}
                 </div>
                 {
                     artistConfig ? characterDef.artists.map(artist => (

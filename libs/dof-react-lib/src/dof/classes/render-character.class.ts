@@ -187,7 +187,7 @@ export class RenderCharacter extends RenderUnit {
     }
 
     private getRenderItems(unit: IUnit, chapterConfig: { chapter: number, route?: string }, placement: { value: string, chapter: number }): IRenderCharacterConfig {
-        let defaultDisplay = { name: unit.name, displayName: unit.displayName, path: this.urls.default, artists: unit.artists };
+        let defaultDisplay = { name: unit.name, displayName: unit.displayName, path: this.urls.default, artists: unit.artists, isPortraitPublic: unit.isPortraitPublic };
         let alts;
         let defaultSwap;
         const { chapter, route } = chapterConfig;
@@ -271,7 +271,7 @@ export class RenderCharacter extends RenderUnit {
         if (swapPortrait && unit.alt && unit.alt[swapPortrait]) { // ogPortraitName is always configured for swapPortrait otherwise it doesn't do anything
             const swapItem = unit.alt[swapPortrait];
             defaultSwap = defaultDisplay;
-            defaultDisplay = { name: swapPortrait, path: this.urls.alts[swapPortrait], artists: swapItem.artists, displayName: swapItem.displayName }
+            defaultDisplay = { name: swapPortrait, path: this.urls.alts[swapPortrait], artists: swapItem.artists, displayName: swapItem.displayName, isPortraitPublic: swapItem.isPortraitPublic }
             defaultSwap.displayName = ogPortraitName ?? defaultSwap.displayName;
             newDisplayName = newDisplayName ?? unit.displayName ?? unit.name;
         }
@@ -287,7 +287,7 @@ export class RenderCharacter extends RenderUnit {
             alts = alts ? [defaultSwap, ...alts] : [defaultSwap];
         }
 
-        const newUnitData = { 
+        const newUnitData = {
             ...unit,
             path: defaultDisplay.path,
             class: className ?? unit?.class,

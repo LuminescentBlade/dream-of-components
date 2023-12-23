@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 export function UnitSheetSprite({ type, characterDef, expanded, artistConfig, onExpand, onCharacterClick, appendTooltip }: {
     type: string, characterDef: IRenderItem, artistConfig: any, expanded?: boolean, onExpand?: () => void,
     onCharacterClick?: () => void,
-    appendTooltip?: (item: IRenderItem, labelClass?: string) => ReactNode
+    appendTooltip?: (item: IRenderItem, labelClass: string) => ReactNode
 }) {
     const artistConfiguration = artistConfig ?? {};
     return (<div className={`${styles.wrapper} lb-unit-sheet-sprite`}>

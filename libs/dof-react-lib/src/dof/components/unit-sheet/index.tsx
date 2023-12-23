@@ -14,7 +14,7 @@ export function UnitSheet({ data, artistConfig, expansionState, toggleCharacter,
     getOnClick?: (character: any, state: any) => (() => void) | undefined
     customCredits?: () => ReactNode,
     appendCredits?: () => ReactNode,
-    appendTooltip?: (item: IRenderItem, labelClass?: string) => ReactNode
+    appendTooltip?: (item: IRenderItem, labelClass: string) => ReactNode
 }) {
     const sections = Object.keys(data) as string[];
     const artists = Object.entries(artistConfig ?? {});

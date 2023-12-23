@@ -4,7 +4,8 @@ export interface IRenderItem {
     name: string,
     artists: string[],
     displayName?: string,
-    path: string
+    path: string,
+    isPortraitPublic?: boolean,
 };
 export interface IRenderItemConfig {
     name: string,
@@ -23,6 +24,7 @@ export interface IUnit extends IPlayableUnitStats {
     name: string;
     artists: string[];
     displayName?: string;
+    isPortraitPublic?: boolean,
     level?: number,
     class?: string;
     path?: string;
@@ -61,7 +63,8 @@ export interface IAltConfig {
     artists: string[],
     chapter?: number,
     displayName?: string,
-    isSpoiler?: boolean
+    isSpoiler?: boolean,
+    isPortraitPublic?: boolean,
 }
 
 export interface ICharacterStateChapter {

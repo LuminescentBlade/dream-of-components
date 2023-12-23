@@ -3,11 +3,11 @@ $header-border-color: var(
   --lb-npc-stat-header-border-color,
   var(--dof-color3, #000)
 );
-$class-color: var(--lb-npc-stat-class-color, var(--dof-color1, #000));
-$talk-color: var(--lb-npc-stat-talk-color, var(--dof-color3, #000));
+$class-color: var(--lb-npc-stat-class-color, var(--dof-color1, inherit));
+$talk-color: var(--lb-npc-stat-talk-color, var(--dof-color3, inherit));
 $optional-color: var(--lb-npc-stat-optional-color, var(--dof-color4, #555));
 $gameover-color: var(--lb-npc-stat-gameover-color, var(--dof-red, #f00));
-$stat-label-color: var(--lb-npc-stat-stat-label-color, var(--dof-color4, #000));
+$stat-label-color: var(--lb-npc-stat-stat-label-color, var(--dof-color4, inherit));
 $weapon-border-color: var(
   --lb-npc-stat-weapon-border-color,
   var(--dof-color3, #000)

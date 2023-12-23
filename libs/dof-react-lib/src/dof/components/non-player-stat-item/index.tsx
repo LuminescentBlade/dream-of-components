@@ -1,18 +1,21 @@
 import styles from './index.module.scss';
 import { WeaponRanksDisplay } from '../weapon-ranks';
 import { INonPlayableUnitStats } from '../../models';
+import { ReactNode } from 'react';
 
-export function NonPlayerStatItem({ 
+export function NonPlayerStatItem({
     statConfig,
     getChapterLabel,
+    customTags,
     config
 }: {
-        statConfig: INonPlayableUnitStats,
-        getChapterLabel?: (statConfig: INonPlayableUnitStats)=>string
-        config?: {
-            displayWeaponIcons?: boolean
-        }
-    }) {
+    statConfig: INonPlayableUnitStats,
+    getChapterLabel?: (statConfig: INonPlayableUnitStats) => string
+    customTags?: (statConfig: INonPlayableUnitStats) => ReactNode
+    config?: {
+        displayWeaponIcons?: boolean
+    }
+}) {
     const { level, class: className, stats, route, optional, gameOver, talk, ranks: weaponRanks, weapons } = statConfig;
     const statKeys = Object.keys(stats ?? {}).filter(stat => stat != 'lv');
     const chapterLabel = getChapterLabel ? getChapterLabel(statConfig) : `Chapter ${statConfig.chapter}`;
@@ -25,6 +28,7 @@ export function NonPlayerStatItem({
                     {level ? <span>Lv. {level} {className ? <span className={styles.class}>{className}</span> : ''}</span> : ''}
                     {optional ? <span className={`${styles.tag} ${styles.optional}`}>Optional</span> : ''}
                     {talk ? <span className={`${styles.tag} ${styles.talk}`}>Talk</span> : ''}
+                    {customTags ? customTags(statConfig) : ''}
                     {gameOver && talk ? <span className={`${styles.tag} ${styles.gameOver}`}>Do Not Kill</span> : ''}
                 </div>}
             </div>

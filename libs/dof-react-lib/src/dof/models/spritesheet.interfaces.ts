@@ -45,12 +45,13 @@ export interface IUnit extends IPlayableUnitStats {
     secret?: boolean;
     fullSheetRenderOrderOverride?: number,
     bossStats?: INonPlayableUnitStats[],
-    npcStats?: INonPlayableUnitStats[]
+    npcStats?: INonPlayableUnitStats[],
 }
 
 
 export type IConditional = {
     chapter?: number;
+    route?: string;
     displayName?: string,
     swapPortrait?: string,
     ogPortraitName?: string,

@@ -220,20 +220,22 @@ export class RenderCharacter extends RenderUnit {
         if (unit.conditional) {
             const chapterConditionals = (() => {
                 if (!Array.isArray(unit.conditional.chapter)) {
-                    return unit.conditional.chapter && unit.conditional.chapter.chapter! <= chapter ? unit.conditional.chapter : null;
+                    const chapterDef = unit.conditional.chapter;
+                    return (chapterDef && chapterDef.chapter! <= chapter) && (!chapterDef.route || chapterConfig.route === chapterDef.route) ? chapterDef : null;
                 } else {
                     if (unit.conditional.chapter.length <= 0) {
                         return null;
                     }
-                    let mostRecentChapter;
+                    let sumChapterDef = null;
                     for (let chapterDef of unit.conditional.chapter) {
-                        if (chapterDef.chapter! <= chapter) {
-                            mostRecentChapter = chapterDef;
+                        if (chapterDef.chapter! <= chapter && (!chapterDef.route || chapterConfig.route === chapterDef.route)) {
+                            sumChapterDef = sumChapterDef ?? {};
+                            sumChapterDef = { ...sumChapterDef, ...chapterDef };
                         } else {
-                            break;
+                            continue;
                         }
                     }
-                    return mostRecentChapter;
+                    return sumChapterDef;
                 }
             })();
             // @ts-ignore

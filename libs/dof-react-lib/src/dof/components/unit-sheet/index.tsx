@@ -40,7 +40,7 @@ export function UnitSheet({ data, artistConfig, expansionState, toggleCharacter,
                 return <UnitSheetSprite key={character.default.name} type={section} characterDef={character.default} artistConfig={artistConfig} onCharacterClick={onClickFcn} appendTooltip={appendTooltip} />
             } else {
                 const toggleFcn = getToggleFunction(character.name);
-                const baseItem = <UnitSheetSprite key={character.default.name} type={section} characterDef={character.default} artistConfig={artistConfig} expanded={expansion.get(character.name)} onExpand={toggleFcn} onCharacterClick={onClickFcn} appendTooltip={appendTooltip} />;
+                const baseItem = <UnitSheetSprite key={`${character.name}_${character.default.name}`} type={section} characterDef={character.default} artistConfig={artistConfig} expanded={expansion.get(character.name)} onExpand={toggleFcn} onCharacterClick={onClickFcn} appendTooltip={appendTooltip} />;
                 if (expansion.get(character.name)) {
                     return <>
                         {baseItem}

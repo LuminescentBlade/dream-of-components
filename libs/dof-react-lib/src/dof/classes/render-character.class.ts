@@ -54,7 +54,7 @@ export class RenderCharacter extends RenderUnit {
         return placement;
     }
 
-    private getSinglePlacement(route: string | undefined | null, chapter: number, character: IUnit, useEarliest = false, showSecretPlayable = false) {
+    private getSinglePlacement(route: string | undefined | null, chapter: number, character: IUnit, useEarliest = false, showSecret = false) {
         let routeConfig;
         const characterRouteConfig = character?.routeConfig;
         if (route && characterRouteConfig && characterRouteConfig[route]) {
@@ -82,7 +82,10 @@ export class RenderCharacter extends RenderUnit {
             }
         }
 
-        if (routeConfig.player != null && (!character.secret || showSecretPlayable)) {
+        if(character.secret && !showSecret){
+            return;
+        }
+        if (routeConfig.player != null) {
             checkByLatest(routeConfig.player, 'player');
         }
         if (routeConfig.enemy != null) {
@@ -107,12 +110,12 @@ export class RenderCharacter extends RenderUnit {
         }
     }
 
-    private getAllPlacement(chapter: number, character: IUnit, useEarliest = false, showSecretPlayable = false) {
+    private getAllPlacement(chapter: number, character: IUnit, useEarliest = false, showSecret = false) {
         // refactor to be more genericized to accept n routes
         const placements = Object.keys(character.routeConfig!)
             // @ts-ignore
             .map((route) => {
-                const routePlacement = this.getSinglePlacement(route, chapter, character, useEarliest, showSecretPlayable);
+                const routePlacement = this.getSinglePlacement(route, chapter, character, useEarliest, showSecret);
                 if (routePlacement) {
                     routePlacement.sort((a, b) => (useEarliest ? a!.chapter - b!.chapter : b!.chapter - a!.chapter));
                     return routePlacement[0];

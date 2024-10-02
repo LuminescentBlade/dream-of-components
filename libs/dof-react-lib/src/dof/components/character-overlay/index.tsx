@@ -22,22 +22,24 @@ export function CharacterOverlay(
         initialState,
         validViews,
         uiIcons,
+        extraStateData
     }: {
         clear: () => void,
         allowComparisonmode?: boolean,
-        renderSideProfile: () => ReactNode,
-        renderTabs: (state: string, onClick: (s: string) => void) => ReactNode,
-        renderContent: (state: string) => ReactNode
+        renderSideProfile: (extraData?: any) => ReactNode,
+        renderTabs: (state: string, onClick: (s: string) => void, extraData?: any) => ReactNode,
+        renderContent: (state: string, setExtraData: (extraData: any) => void) => ReactNode
         initialState: string,
         validViews?: Set<string>,
         uiIcons?: {
             dragDrop?: () => ReactNode,
             exit: () => ReactNode,
-        }
-
+        },
+        extraStateData?: any
     }) {
 
     cachedState.state = cachedState.state ?? initialState;
+    cachedState.extraData = cachedState.extraData ?? extraStateData ?? {};
 
     if (cachedState.resetState) {
         cachedState.state = initialState;
@@ -99,12 +101,15 @@ export function CharacterOverlay(
                 </button>
             </div>
             <div className={styles.content}>
-                {renderSideProfile()}
+                {renderSideProfile(widgetState.extraData)}
                 <div className={styles.data}>
                     {renderTabs(widgetState.state, (selectedState: string) => { setWidgetStateCaching({ ...widgetState, state: selectedState }) })}
                     <div className={styles.dataContent}>
                         {
-                            renderContent(widgetState.state)
+                            renderContent(widgetState.state, (extraData) => {
+                                // defer 1 loop
+                                setTimeout(()=>setWidgetStateCaching({ ...widgetState, extraData: { ...widgetState.extraData, ...extraData } }),0);
+                            })
                         }
                     </div>
                 </div>
